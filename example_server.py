@@ -16,23 +16,23 @@ az = 0
 el = 0
 
 conn, addr = s.accept()
-print('Received connection from:', addr)
+print "Received connection from:", addr
 while 1:
     data = conn.recv(BUFFER_SIZE)
     if not data: break
-    print("received data:", data)
+    print "received data:", data
     # Parse string
     pdata = data.split(",")
     try:
         az = float(pdata[0])
     except ValueError:
-        print("Error parsing Azimuth: '",pdata[0],"'")
+        print "Error parsing Azimuth: '",pdata[0],"'"
         break
     try:
         el = float(pdata[1])
     except ValueError:
-        print("Error parsing Elevation: '",pdata[1],"'")
+        print "Error parsing Elevation: '",pdata[1],"'"
         break
-    print("AZ: ",az)
-    print("EL: ",el)
+    print "AZ: ",az
+    print "EL: ",el
 conn.close()
