@@ -3,25 +3,27 @@
 Created on Fri Feb 19 17:19:48 2016
 
 @author: BEE
-"""
+""Gives the azimuth and elvation angles every two seconds for the cubesat given
+ cubesat name, and number x=1, connects to server """
 import socket
 import time
 import datetime
 import urllib2
 from pyorbital import tlefile
 from pyorbital import orbital
-def cubesat_t():   
+def cubesat_t(cubesat,x):   
      TCP_IP = '127.0.0.1'
      TCP_PORT = 5005
      BUFFER_SIZE = 1024
      s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-     """s.connect((TCP_IP, TCP_PORT))"""
+     if x==1:
+         s.connect((TCP_IP, TCP_PORT))
      response = urllib2.urlopen('http://celestrak.com/NORAD/elements/cubesat.txt')
      html = response.read()
      f = open('tle1.txt', 'r+')
      f.write(html)
      f.close()  
-     tle=tlefile.read('tisat 1','tle1.txt')
+     tle=tlefile.read(cubesat,'tle1.txt')
      inc = tle.inclination
      print(inc)
      lon,lat = -1.394,50.9354
@@ -81,7 +83,8 @@ def cubesat_t():
                  "print look,utctime1"
                  angle=["%.3G" % (look[0]),"%.3G" % (look[1])]
                  msg1= str(angle[0])+','+str(angle[1])
-                 "s.send(msg1)"
+                 if x==1:
+                     s.send(msg1)
                  print msg1
                  time.sleep(2)
              ip=ip+1        
